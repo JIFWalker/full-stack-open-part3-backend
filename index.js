@@ -1,7 +1,8 @@
-const http = require ('http')
 const express = require('express')
-const { timeStamp } = require('console')
 const app = express()
+
+app.use(express.json())
+
 
 let persons = [
     { 
@@ -26,9 +27,31 @@ let persons = [
     }
 ]
 
-app.get('/', (request, response) => {
-    response.send('<h1>HelloWorld!</h1>')
-})
+app.post('/api/persons', (request, response) => {
+    const id = Math.floor(Math.random() * 1000000)
+    const person = request.body
+
+    person.id = id
+
+    switch (true) {
+        case persons.map(personList => personList.name).includes(person.name): 
+            console.log(`error: 'name must be unique'`)
+            response.status(409).end()
+            break
+        case person.name === "":
+           console.log(`error: 'name is missing!`)
+            response.status(406).end()
+            break
+        case person.number === "":
+          console.log(`error: 'number is missing!`)
+          response.status(406).end()
+          break
+    default:
+            persons = persons.concat(person)
+            response.json(person)
+    }
+  })
+
 
 app.get('/api/persons', (request, response) => {
     response.json(persons)
@@ -56,6 +79,7 @@ app.delete('/api/persons/:id', (request, response) => {
     
     response.status(204).end()
 })
+
 
 const PORT = 3001
 app.listen(PORT)
