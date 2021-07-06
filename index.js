@@ -38,6 +38,7 @@ app.use(express.static('build'))
 app.use(express.json())
 app.use(morgan(':method :url :status :res[content-length] - :response-time ms :data'))
 
+
 app.post('/api/persons', (request, response) => {
     const id = Math.floor(Math.random() * 1000000)
     const person = request.body
