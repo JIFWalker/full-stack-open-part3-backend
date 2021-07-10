@@ -38,6 +38,8 @@ app.post('/api/persons', (request, response) => {
     })
   })
 
+
+// Updates number for specified contact
 app.put('/api/persons/:id', (request, response, next) => {
   const body = request.body
   const contact = {
@@ -55,15 +57,17 @@ app.put('/api/persons/:id', (request, response, next) => {
 
 // Displays number of contacts and the current local date
 app.get('/info', (request, response) => {
-    response.send(`<p>Phonebook has info for ${persons.length} people</p>
+  Contact.countDocuments(({}), function(err, results){
+    response.send(`
+    <p>Phonebook has info for ${results} people</p>
     <p>${Date()}</p>`
     )
+  })
 })
 
 
 // Gets a specific contact's data from their ID
 app.get('/api/persons/:id', (request,response) => {
-  console.log('bah')
   Contact.findById(request.params.id)
     .then(contact => {
       if (contact) {
