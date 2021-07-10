@@ -38,6 +38,20 @@ app.post('/api/persons', (request, response) => {
     })
   })
 
+app.put('/api/persons/:id', (request, response, next) => {
+  const body = request.body
+  const contact = {
+    name: body.name,
+    number: body.number,
+  }
+
+  Contact.findByIdAndUpdate(request.params.id, contact)
+    .then(updatedContact => {
+      response.json(updatedContact)
+    })
+    .catch(error => next(error))
+})
+
 
 // Displays number of contacts and the current local date
 app.get('/info', (request, response) => {
@@ -49,6 +63,7 @@ app.get('/info', (request, response) => {
 
 // Gets a specific contact's data from their ID
 app.get('/api/persons/:id', (request,response) => {
+  console.log('bah')
   Contact.findById(request.params.id)
     .then(contact => {
       if (contact) {
