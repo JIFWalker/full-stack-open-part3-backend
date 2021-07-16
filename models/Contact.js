@@ -17,19 +17,21 @@ const contactSchema = new mongoose.Schema({
   _id: String,
   name: {
     type: String,
-    minLength: 1,
+    minLength: 3,
     required: true,
     unique: true
   },
   number: {
     type: String,
-    minLength: 1,
+    minLength: 8,
     required: true,
     unique: true
   },
 })
 
 contactSchema.plugin(uniqueValidator)
+
+
 
 contactSchema.set('toJSON', {
     transform: (document, returnedObject) => {

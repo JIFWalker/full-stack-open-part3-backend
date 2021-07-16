@@ -43,13 +43,12 @@ app.post('/api/persons', (request, response, next) => {
 
 // Updates number for specified contact
 app.put('/api/persons/:id', (request, response, next) => {
-  const body = request.body
-  const contact = {
-    name: body.name,
-    number: body.number,
-  }
+  const { number } = request.body
 
-  Contact.findByIdAndUpdate(request.params.id, contact)
+  Contact.findByIdAndUpdate(request.params.id, { number }, {
+    runValidators: true,
+    context: 'query'
+  })
     .then(updatedContact => {
       response.json(updatedContact)
     })
